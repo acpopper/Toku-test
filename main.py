@@ -1,5 +1,6 @@
 import requests
-from data import API_KEY, Character
+from clases import Character
+from data import API_KEY
 import random
 
 res = requests.get(f"https://superheroapi.com/api/{API_KEY}/{random.randint(1, 731)}")
