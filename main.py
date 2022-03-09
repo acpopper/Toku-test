@@ -1,6 +1,6 @@
 import requests
 from clases import Character
-from data import API_KEY
+from data import API_KEY, mailgun_api
 import random
 from math import floor
 
@@ -48,6 +48,16 @@ def simulation():
     print('Team B')
     for i in team_b['team']:
         print(i)
+
+
+def send_simple_message(to):
+	return requests.post(
+		"https://api.mailgun.net/v3/sandbox62fd7184edf44a54ad96e60f670bc76d.mailgun.org/messages",
+		auth=("api", mailgun_api),
+		data={"from": "Alan Popper <acpopper@uc.cl>",
+			"to": to,
+			"subject": "Resultado simulación",
+			"text": ""})
 
 
 if __name__ == "__main__":
