@@ -48,14 +48,14 @@ def simulacion(team_a, team_b, email=None):
     pb = 0
     player_a = team_a['team'][pa]
     player_b = team_b['team'][pb]
-    results = ''
+    results = '<p>RESULTADOS:<br>'
     print(' '*10 + '-- INICIA LA PELEA!! --')
     print('Equipo A' + ' '*10 + 'vs' + ' '*10 + 'Equipo B')
-    results += 'Equipo A' + ' '*10 + 'vs' + ' '*10 + 'Equipo B\n'
+    results += 'Equipo A' + ' '*10 + 'vs' + ' '*10 + 'Equipo B<br>'
     for i in range(0, 5):
         print(f"{team_a['team'][i]} -- {team_b['team'][i]}")
-        results += f"{team_a['team'][i]} -- {team_b['team'][i]}\n"
-    results += '\n'
+        results += f"{team_a['team'][i]} -- {team_b['team'][i]}<br>"
+    results += '<br>'
     print('\n')
 
     ronda = 1
@@ -65,7 +65,7 @@ def simulacion(team_a, team_b, email=None):
         player_b.recibir_daño(player_a.name, player_a.atacar())
         if player_b.hp == 0:
             print(f"{player_a.name} ha derrotado a {player_b.name}!!\n-----")
-            results += f'Ronda {ronda}: {player_a.name} (winner) vs {player_b.name}\n'
+            results += f'Ronda {ronda}: {player_a.name} (winner) vs {player_b.name}<br>'
             ronda += 1
             pb += 1
             if pb < 5:
@@ -80,7 +80,7 @@ def simulacion(team_a, team_b, email=None):
         player_a.recibir_daño(player_b.name, player_b.atacar())
         if player_a.hp == 0:
             print(f"{player_b.name} ha derrotado a {player_a.name}!!\n-----")
-            results += f'Ronda {ronda}: {player_a.name} vs {player_b.name} (winner)\n'
+            results += f'Ronda {ronda}: {player_a.name} vs {player_b.name} (winner)<br>'
             ronda += 1
             pa += 1
             if pa < 5:
@@ -93,10 +93,9 @@ def simulacion(team_a, team_b, email=None):
             
     
     print('--- LAS PELEAS HAN FINALIZADO! ---')
-    results += '--- LAS PELEAS HAN FINALIZADO! ---\n'
-    print(f"Equipo ganador: {'Equipo A!' if team_b['defeated'] else 'Equipo B!'}")
-    results += "Equipo ganador: \033[1m" + f"{'Equipo A!' if team_b['defeated'] else 'Equipo B!'}" + "\033[0m \n"
-
+    results += '--- LAS PELEAS HAN FINALIZADO! ---<br>'
+    print(f"Equipo ganador: \033[1m {'Equipo A!' if team_b['defeated'] else 'Equipo B!'}\033[0m \n")
+    results += f"Equipo ganador: <b>{'Equipo A!' if team_b['defeated'] else 'Equipo B!'}</b> <br>"
     if email:
         send_simple_message(email, results)
 
@@ -107,9 +106,11 @@ def send_simple_message(to, text):
 		data={"from": "Alan Popper <acpopper@uc.cl>",
 			"to": to,
 			"subject": "Resultado simulación",
-			"text": text})
+			"html": text})
 
 
 if __name__ == "__main__":
     A, B = build_teams()
-    simulacion(A, B, 'acpopper@uc.cl')  # Añadir en un tercer parámetro el email si se quiere enviar
+    # Añadir en un tercer parámetro el email si se quiere enviar
+    # Ej. simulacion(A, B, 'acpopper@uc.cl')
+    simulacion(A, B)

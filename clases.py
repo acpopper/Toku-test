@@ -81,13 +81,4 @@ class Character:
         return f'{self.name} [{self.hp}/{self.full_hp}]'
 
 if __name__ == "__main__":
-    a = ['Professor Zoom'
-    ,{'intelligence': '94', 'strength': '10', 'speed': '100', 'durability': '20', 'power': '83', 'combat': '20'}
-    ,'bad']
-
-    c = Character(1, a[0], a[1], a[2])
-    c.apply_team_bonus('bad')
-    a[0] = 'Alan'
-    d = Character(1, a[0], a[1], a[2])
-    d.apply_team_bonus('bad')
-    c.recibir_daño(d.name, d.atacar())
+    pass
