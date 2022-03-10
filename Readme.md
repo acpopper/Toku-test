@@ -4,6 +4,7 @@ Como especifica el enunciado, si un héroe derrota a su rival, se recupera la vi
 Todo lo demás sigue el enunciado.
 
 Consideraciones:
+  - Deben tener los archivos main, clases y data en la misma carpeta. Para correr la simulación se ejecuta main.py con python 3.
   - Frecuentemente los superhéroes derrotan a su rival de un solo golpe (esperable al poner a Paul Blart: mall cop vs Thanos)
   - Muy rara vez, pero ocurre, pelearán dos superhéroes muy débiles, apenas inflingiéndose daño, por lo que conviene detener la simulación en esos casos. Pues puede demorarse mucho en terminar.
   - Hay superhéroes con alignment 'neutral', a ellos no se les aplica el buff o debuff de equipo
