@@ -1,3 +1,5 @@
+from time import sleep
+from pyrsistent import T
 import requests
 from clases import Character
 from data import API_KEY, mailgun_api
@@ -11,7 +13,7 @@ num_superheroes = 731
 # print(res.json()['powerstats'])
 # print(res.json()['biography']['alignment'])
 
-def simulation():
+def build_teams():
     team_a = {'team': [], 'alignment': 'bad'}
     team_b = {'team': [], 'alignment': 'bad'}
     drafts = set()
@@ -42,13 +44,59 @@ def simulation():
         i.apply_team_bonus(team_a['alignment'])
     for i in team_b['team']:
         i.apply_team_bonus(team_b['alignment'])
-    print('Team A')
-    for i in team_a['team']:
-        print(i)
-    print('Team B')
-    for i in team_b['team']:
-        print(i)
+    
+    return team_a, team_b
 
+def simulacion(team_a, team_b, email=None):
+    team_a['defeated'] = False
+    team_b['defeated'] = False
+    pa = 0
+    pb = 0
+    player_a = team_a['team'][pa]
+    player_b = team_b['team'][pb]
+
+    print(' '*10 + '-- INICIA LA PELEA!! --')
+    print('Equipo A' + ' '*10 + 'vs' + ' '*10 + 'Equipo B')
+    for i in range(0, 5):
+        print(f"{team_a['team'][i]} -- {team_b['team'][i]}")
+    print('\n \n')
+
+    ronda = 1
+    turno = 1
+    results = 'Resultados peleas\n'
+    while not team_a['defeated'] or not team_b['defeated']:
+        print(f'Ronda {ronda}--Turno {turno}')
+        player_b.recibir_daño(player_a.name, player_a.atacar())
+        if player_b.hp == 0:
+            print(f"{player_a.name} ha derrotado a {player_b.name}")
+            results + f'Ronda {ronda}: {player_a.name} (winner) vs {player_b.name}\n'
+            ronda += 1
+            pb += 1
+            if pb < 5:
+                player_b = team_b['team'][pb]
+                player_a.reset_health()
+            else:
+                team_b['defeated'] = True
+        
+        sleep(1)
+        player_a.recibir_daño(player_b.name, player_b.atacar())
+        if player_a.hp == 0:
+            print(f"{player_b.name} ha derrotado a {player_a.name}")
+            results + f'Ronda {ronda}: {player_a.name} vs {player_b.name} (winner)\n'
+            ronda += 1
+            pa += 1
+            if pa < 5:
+                player_a = team_a['team'][pa]
+                player_b.reset_health()
+            else:
+                team_a['defeated'] = True
+        
+        sleep(1)
+        
+            
+
+    
+    pass
 
 def send_simple_message(to):
 	return requests.post(
@@ -61,4 +109,5 @@ def send_simple_message(to):
 
 
 if __name__ == "__main__":
-    simulation()
+    A, B = build_teams()
+    simulacion(A, B)

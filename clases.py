@@ -20,6 +20,17 @@ class Character:
         self.alignment = al
         self.hp_mod_AS = (1+random.randint(0,10)/10)
     
+    @property
+    def hp(self):
+        return self._hp
+
+    @hp.setter
+    def hp(self, value):
+        if value < 0 :
+            self._hp = 0
+        else:
+            self._hp = value
+
     # Se considera que se usan los stats "reales" para calcular el hp
     # Hay heroes 'neutral', no se les aplicará ni buff ni debuff
     def apply_team_bonus(self, team_alignment):
@@ -36,30 +47,32 @@ class Character:
         self.durability = floor(self.durability*self.FB)
         self.power = floor(self.power*self.FB)
         self.combat = floor(self.combat*self.FB)
-        self.hp = floor((self.strength*0.8 + self.durability*0.7 + self.power)*self.hp_mod_AS/2) + 100
-        self.full_hp = self.hp
+        self._hp = floor((self.strength*0.8 + self.durability*0.7 + self.power)*self.hp_mod_AS/2) + 100
+        self.full_hp = self._hp
 
     def atacar(self):
         ataque = random.choice([self.mental, self.strong, self.fast])
-        return ataque()
+        return floor(ataque())
 
     def mental(self):
         daño = (self.intelligence*0.7 + self.speed*0.2+ self.combat*0.1)*self.FB
         print(f"{self.name} ha usado ataque mental!")
-        print(f"Inflige {daño} de daño!")
         return daño
 
     def strong(self):
         daño = (self.strength*0.6 + self.power*0.2+ self.combat*0.2)*self.FB
         print(f"{self.name} ha usado ataque strong!")
-        print(f"Inflige {daño} de daño!")
         return daño
 
     def fast(self):
         daño = (self.speed*0.55 + self.durability*0.25+ self.strength*0.2)*self.FB
         print(f"{self.name} ha usado ataque fast!")
-        print(f"Inflige {daño} de daño!")
         return daño
+
+    def recibir_daño(self, atacante, daño):
+        self.hp -= daño
+        print(f"{atacante} hizo {daño} daño a {self.name}.")
+        print(self)
 
     def reset_health(self):
         self.hp = self.full_hp
@@ -74,5 +87,7 @@ if __name__ == "__main__":
 
     c = Character(1, a[0], a[1], a[2])
     c.apply_team_bonus('bad')
-    print(c)
-    c.atacar()
+    a[0] = 'Alan'
+    d = Character(1, a[0], a[1], a[2])
+    d.apply_team_bonus('bad')
+    c.recibir_daño(d.name, d.atacar())
